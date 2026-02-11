@@ -52,10 +52,14 @@ export default function Home() {
       saveMoodToHistory(mood);
     } catch (error) {
       console.error("AI quote generation failed:", error);
+      let description = "We couldn't generate a quote for you. Please try again.";
+      if (error instanceof Error && /api key/i.test(error.message)) {
+        description = "The AI service API key is missing or invalid. Please make sure it's configured correctly in your environment variables.";
+      }
       toast({
         variant: "destructive",
         title: "Oh no! Something went wrong.",
-        description: "We couldn't generate a quote for you. Please try again.",
+        description: description,
       });
     } finally {
       setIsLoading(false);
